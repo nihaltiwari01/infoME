@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "217501734127",
+    "project_id": "infome-65069",
+    "storage_bucket": "infome-65069.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217501734127:android:9563ffd8f2aff0bd40771a",
+        "android_client_info": {
+          "package_name": "com.mcafirst.infome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi82VNW00AQ686w-NtpmIfoyOgQAoJ0aU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217501734127:android:b20f4d2e2deab53440771a",
+        "android_client_info": {
+          "package_name": "com.mcafirst.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi82VNW00AQ686w-NtpmIfoyOgQAoJ0aU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

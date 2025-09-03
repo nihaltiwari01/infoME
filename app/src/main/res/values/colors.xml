@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="Cultered">#F8F9FA</color>
+    <color name="DarkCultered">#E9ECEF</color>
+    <color name="Gainsboro">#DEE2E6</color>
+    <color name="Lightgray">#CED4DA</color>
+    <color name="Cadetbluecrayola">#ADB5BD</color>
+    <color name="Nickel">#6C757D</color>
+    <color name="Charcol">#495057</color>
+    <color name="Onyx">#343A40</color>
+    <color name="Raisinblack">#212529</color>
+
+
+    <color name="AliceBlue">#E3F2FD</color>
+    <color name="UranianBlue">#BBDEFB</color>
+    <color name="LightSkyBlue">#90CAF9</color>
+    <color name="ArgentinianBlue">#64B5F6</color>
+    <color name="DarkArgentinianBlue">#42A5F5</color>
+    <color name="Dodgerblue">#2196F3</color>
+    <color name="BleudeFrance">#1E88E5</color>
+    <color name="FrenchBlue">#1976D2</color>
+    <color name="GreenBlue">#1565C0</color>
+    <color name="Cobaltblue">#0D47A1</color>
+
+
+
+</resources>
