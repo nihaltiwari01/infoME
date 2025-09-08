@@ -262,6 +262,4 @@ private void userVerification(FirebaseUser user) {
             });
 }
 
-
-
 }
