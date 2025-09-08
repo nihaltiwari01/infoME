@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20sp"
+    android:orientation="vertical"
+    tools:context=".UploadData">
+
+        <!-- Toolbar / Action Bar -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.Material3.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            android:titleTextColor="@android:color/white"
+            app:navigationIcon="@drawable/left_arrow"
+            app:title="ADD TIMETABLE"
+            app:titleCentered="true">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DAY" />
+
+        <!-- Day Spinner -->
+        <Spinner
+            android:id="@+id/spinnerDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/DarkArgentinianBlue"
+            android:paddingTop="7dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="TIME PERIOD" />
+
+        <!-- Time period -->
+        <Spinner
+            android:id="@+id/spinnerTimePeriod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/DarkArgentinianBlue"
+            android:paddingTop="7dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="SUBJECT NAME" />
+
+
+        <!-- Subject Name -->
+        <Spinner
+            android:id="@+id/spinnerSubjectName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/DarkArgentinianBlue"
+            android:paddingTop="7dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="SUBJECT CODE" />
+
+        <!-- Subject Code Spinner -->
+        <Spinner
+            android:id="@+id/spinnerSubjectCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/DarkArgentinianBlue"
+            android:paddingTop="7dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="ROOM NUMBER" />
+
+        <!-- Room Number Spinner -->
+        <Spinner
+            android:id="@+id/spinnerRoomNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/DarkArgentinianBlue"
+            android:paddingTop="7dp" />
+
+        <!-- Upload Button -->
+        <Button
+            android:id="@+id/btnUpload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Upload Timetable" />
+
+    </LinearLayout>
+</LinearLayout>

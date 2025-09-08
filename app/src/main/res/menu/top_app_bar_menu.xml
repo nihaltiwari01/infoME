@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_timetable"
+        android:icon="@drawable/addtimetable"
+        android:title="Settings"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:icon="@drawable/outline_account_circle_off_24"
+        android:title="Refresh"
+        app:showAsAction="ifRoom" />
+</menu>

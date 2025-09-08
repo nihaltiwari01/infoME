@@ -11,12 +11,10 @@
     <!-- Toolbar / Action Bar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
-        style="@style/Widget.Material3.Toolbar"
+        style="@style/Widget.Material3.AppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F8F9FA"
         android:gravity="center"
-        android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
         app:navigationIcon="@drawable/left_arrow"
         app:title="Verify Yourself"
         app:titleCentered="true"

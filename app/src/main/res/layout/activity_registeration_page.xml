@@ -9,17 +9,18 @@
     tools:context=".Registeration_Page">
 
     <!-- Toolbar / Action Bar -->
+<!--        style="@style/Widget.Material3.AppBarLayout"-->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         style="@style/Widget.Material3.AppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center"
         app:navigationIcon="@drawable/left_arrow"
         app:title="Create Password"
-        app:titleCentered="true"
-        android:titleTextColor="@color/ArgentinianBlue">
+        app:titleCentered="true">
+<!--        android:titleTextColor="@color/ArgentinianBlue"-->
+
 
     </com.google.android.material.appbar.MaterialToolbar>
 

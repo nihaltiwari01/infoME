@@ -17,10 +17,10 @@
 
         <ImageView
             android:layout_marginTop="30dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
-            android:src="@drawable/icon"/>
+            android:src="@drawable/appiconsl"/>
         <ProgressBar
             android:id="@+id/login_progressBar"
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="INFOME"
+            android:text="infoME"
             android:textColor="@color/Raisinblack"
             android:fontFamily="@font/opensansmedium"
             android:textSize="50dp"/>
