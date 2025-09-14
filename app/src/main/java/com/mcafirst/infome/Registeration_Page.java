@@ -131,6 +131,10 @@ public class Registeration_Page extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     Toast.makeText(Registeration_Page.this, "Registration successful.",
                             Toast.LENGTH_SHORT).show();
+                    String userName = "";
+//                    upload user data
+                    uploadUserData(receivedEmailID, userName);
+
                     if (user != null) {
                         user.sendEmailVerification()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -163,6 +167,10 @@ public class Registeration_Page extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void uploadUserData(String receivedEmailID, String userName) {
 
     }
 }
