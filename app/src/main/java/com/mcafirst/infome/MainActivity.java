@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 🔹 Fetch timetable for RecyclerView
+    // 🔹   Fetch timetable for RecyclerView
     private void fetchData() {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
