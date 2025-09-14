@@ -26,10 +26,16 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Registeration_Page extends AppCompatActivity {
 
-    public static final String EXTRA_ROLL_NUMBER = "ROLL_NUMBER";
+    public static final String USER_ID = "userID";
+    public static final String ROLE = "role";
     TextInputEditText enterPassword;
     TextInputEditText confirmPassword;
     MaterialButton submitButton;
@@ -53,8 +59,8 @@ public class Registeration_Page extends AppCompatActivity {
 
         Intent intent = getIntent();
         receivedEmailID = null;
-        if (intent != null && intent.hasExtra(EXTRA_ROLL_NUMBER)) {
-            receivedEmailID = intent.getStringExtra(EXTRA_ROLL_NUMBER);
+        if (intent != null && intent.hasExtra(USER_ID)) {
+            receivedEmailID = intent.getStringExtra(USER_ID);
         } else {
             Toast.makeText(this, "Error: Could not get user details " , Toast.LENGTH_SHORT).show();
         }
@@ -121,6 +127,15 @@ public class Registeration_Page extends AppCompatActivity {
             confirmPassword.setText("");
             return;
         }
+        Intent intent = getIntent();
+        String role;
+        if (intent != null && intent.hasExtra(ROLE)) {
+            role = intent.getStringExtra(ROLE);
+        } else {
+            role = "";
+        }
+        String name = "";
+
         submitButton.setEnabled(false); // Prevent multiple clicks
         mAuth.createUserWithEmailAndPassword(receivedEmailID, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -131,6 +146,33 @@ public class Registeration_Page extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     Toast.makeText(Registeration_Page.this, "Registration successful.",
                             Toast.LENGTH_SHORT).show();
+                    String uid = mAuth.getCurrentUser().getUid();
+                    Log.d(TAG, "createUserWithEmail:success");
+
+                    DatabaseReference masterRef = FirebaseDatabase.getInstance().getReference("MasterData");
+                    User userData = new User(name, receivedEmailID, role); // default role
+
+                    // Add user under registeredUsers
+                    masterRef.child("registeredUsers").child(uid).setValue(userData)
+                            .addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    // Now remove from unRegisteredAdmin
+                                    DatabaseReference unregRef = masterRef.child("unRegisteredAdmin");
+                                    unregRef.orderByValue().equalTo(receivedEmailID)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    for (DataSnapshot child : snapshot.getChildren()) {
+                                                        child.getRef().removeValue();
+                                                    }
+                                                }
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) { }
+                                            });
+                                }
+                            });
+
+
                     if (user != null) {
                         user.sendEmailVerification()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {

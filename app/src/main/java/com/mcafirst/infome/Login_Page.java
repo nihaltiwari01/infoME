@@ -23,6 +23,8 @@ import androidx.media3.common.util.UnstableApi;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Login_Page extends AppCompatActivity {
     private static final String TAG = "LoginPage";
@@ -102,6 +104,8 @@ public class Login_Page extends AppCompatActivity {
     }
 
     private void navigateToMainActivity() {
+
+
         Intent intent = new Intent(Login_Page.this, MainActivity.class); // Replace MainActivity with your target activity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear back stack
         startActivity(intent);
@@ -153,7 +157,21 @@ public class Login_Page extends AppCompatActivity {
                             if (user.isEmailVerified()) {
                                 // Email is verified, proceed to main app
                                 Toast.makeText(Login_Page.this, "Login Successful.", Toast.LENGTH_SHORT).show();
-                                navigateToMainActivity();
+                                DatabaseReference userRef = FirebaseDatabase.getInstance()
+                                        .getReference("MasterData")
+                                        .child("registeredUsers")
+                                        .child(user.getUid());
+
+                                userRef.get().addOnSuccessListener(snapshot -> {
+                                    String role = snapshot.child("role").getValue(String.class);
+                                    getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                            .edit()
+                                            .putString("user_role", role)
+                                            .apply();
+
+                                    // Only navigate once the role is cached
+                                    navigateToMainActivity();
+                                });
                             } else {
                                 // Email is NOT verified
                                 Toast.makeText(Login_Page.this, "Please verify your email address to continue.", Toast.LENGTH_LONG).show();

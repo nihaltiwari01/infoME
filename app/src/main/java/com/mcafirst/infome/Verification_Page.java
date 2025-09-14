@@ -103,13 +103,35 @@ public class Verification_Page extends AppCompatActivity {
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                         System.out.println("ID " + snapshot1.getKey() + " Value " + snapshot1.getValue(String.class));
                         Intent intent = new Intent(Verification_Page.this, Registeration_Page.class);
-                    intent.putExtra("ROLL_NUMBER", rollNumber + "@nitm.ac.in");
+                    intent.putExtra("userID", rollNumber + "@nitm.ac.in");
+                        intent.putExtra("role", "student");
                     startActivity(intent);
                     }
                 } else {
-                    // The roll number was not found in the list
-                    System.out.println("Roll number '" + rollNumber + "' not found in unRegisteredStudent list.");
-                    Toast.makeText(Verification_Page.this, "Enter Valid Roll Number" , Toast.LENGTH_SHORT ).show();
+                    Query query1 = databaseReference.child("unRegisteredAdmin");
+                    query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                    Log.d("ERROR_REPORT", "ID " + snapshot1.getKey() + " Value " + snapshot1.getValue(String.class));
+                                    Intent intent = new Intent(Verification_Page.this, Registeration_Page.class);
+                                    intent.putExtra("userID", snapshot1.getValue(String.class));
+                                    intent.putExtra("role", "teacher");
+                                    startActivity(intent);
+                                }
+                            } else {
+                                Toast.makeText(Verification_Page.this, "Enter Valid Roll Number" , Toast.LENGTH_SHORT ).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(Verification_Page.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
                 }
             }
 

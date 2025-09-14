@@ -1,5 +1,6 @@
 package com.mcafirst.infome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -44,6 +45,14 @@ public class UploadData extends AppCompatActivity {
                     finish();
                 }
 
+            });
+
+            findViewById(R.id.btnAddStudent).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(UploadData.this, AddUsers.class);
+                            startActivity(intent);
+                }
             });
 
             // Firebase reference

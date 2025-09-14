@@ -31,10 +31,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -50,12 +52,27 @@ public class MainActivity extends AppCompatActivity {
     TimetableAdapter adapter;
     List<TimetableItem> itemList = new ArrayList<>();
     DatabaseReference ref;
+    private String role;   // null until loaded
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Fetch role first
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance()
+                .getReference("MasterData")
+                .child("registeredUsers")
+                .child(currentUser.getUid());
 
+        userRef.get().addOnSuccessListener(snapshot -> {
+            role = snapshot.child("role").getValue(String.class);
+            // now that we know the role, trigger menu creation
+            invalidateOptionsMenu();
+        });
+
+        // 🔹 Create Notification Channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     "timetableChannel",
@@ -66,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             manager.createNotificationChannel(channel);
         }
 
+        // 🔹 Ask for notification permission (Android 13+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -74,57 +92,50 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        DatabaseReference masterRef = FirebaseDatabase.getInstance().getReference("MasterData");
+        Query query = masterRef.child("registeredUsers").orderByValue().equalTo("teacher");
+
+
+
+        // 🔹 Toolbar setup
         MaterialToolbar toolbar = findViewById(R.id.mainTopAppBar);
         setSupportActionBar(toolbar);
 
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_add_timetable) {
-                // Handle click here
-                Toast.makeText(MainActivity.this, "Settings clicked!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, UploadData.class);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
-        toolbar.setOnMenuItemClickListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.action_add_timetable) {
-                // Handle click here
-                Toast.makeText(MainActivity.this, "Settings clicked!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, UploadData.class);
-                startActivity(intent);
+
+                startActivity(new Intent(MainActivity.this, UploadData.class));
                 return true;
             } else if (itemId == R.id.action_sign_out) {
-                // Sign out from Firebase
                 FirebaseAuth.getInstance().signOut();
-
-                // Optional: redirect to login screen after sign out
                 Intent loginIntent = new Intent(MainActivity.this, Login_Page.class);
                 loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loginIntent);
-
                 Toast.makeText(MainActivity.this, "Signed out successfully!", Toast.LENGTH_SHORT).show();
                 return true;
             }
             return false;
         });
 
-
+        // 🔹 Recycler setup
         recyclerView = findViewById(R.id.recyclerTimetable);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         adapter = new TimetableAdapter(itemList);
         recyclerView.setAdapter(adapter);
 
         ref = FirebaseDatabase.getInstance().getReference("Timetable");
+        ref.keepSynced(true);
         fetchData();
 
+        // 🔹 Schedule notifications from Firebase
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot daySnapshot : snapshot.getChildren()) {
-                    String dayName = daySnapshot.getKey(); // e.g. "Monday"
+
+//                    String dayName = daySnapshot.getKey(); // e.g. "Monday"
+                    String dayName = "Monday"; // e.g. "Monday"
 
                     for (DataSnapshot periodSnapshot : daySnapshot.getChildren()) {
                         String period = periodSnapshot.getKey(); // e.g. "10:00 - 10:55"
@@ -133,22 +144,8 @@ public class MainActivity extends AppCompatActivity {
 
                         if (period != null && subject != null && room != null) {
                             String startTime = period.split("-")[0].trim();
-//                            String startTime = "01:46";
+//                            String startTime = "17:27";
                             scheduleWeeklyNotification(dayName, startTime, subject, room);
-
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.add(Calendar.SECOND, 5); // fire after 10 seconds
-
-                            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                            Intent intent = new Intent(MainActivity.this, NotificationReceiver.class);
-                            intent.putExtra("subjectName", subject);
-                            intent.putExtra("room", room);
-
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                                    MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-                            );
-
-                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                         }
                     }
                 }
@@ -160,27 +157,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 🔹 Ask for exact alarm permission (Android 12+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
             if (!alarmManager.canScheduleExactAlarms()) {
                 Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent); // Opens system settings where user enables it
+                startActivity(intent);
             }
         }
-
-
-
-
     }
 
-    private void scheduleWeeklyNotification(String dayName, String time, String subject, String room) {
+    // 🔹 Schedule weekly notifications
+    private void scheduleWeeklyNotification(String dayName, String startTime, String subject, String room) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         try {
-            Date date = sdf.parse(time);
+            Date date = sdf.parse(startTime);
             calendar.set(Calendar.HOUR_OF_DAY, date.getHours());
             calendar.set(Calendar.MINUTE, date.getMinutes());
             calendar.set(Calendar.SECOND, 0);
@@ -188,6 +182,34 @@ public class MainActivity extends AppCompatActivity {
             int dayOfWeek = getDayOfWeek(dayName);
             calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
 
+            // 🔹 Subtract 5 minutes from the class start time
+            calendar.add(Calendar.MINUTE, 0);
+
+//            // 🔹 Test notification after 10 seconds
+//            Calendar testCalendar = Calendar.getInstance();
+//            testCalendar.add(Calendar.SECOND, 3);
+//
+//            AlarmManager testAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//            Intent testIntent = new Intent(MainActivity.this, NotificationReceiver.class);
+//            testIntent.putExtra("subjectName", subject);
+//            testIntent.putExtra("room", room);
+//            testIntent.putExtra("startTime", startTime);
+//            testIntent.putExtra("dayName", dayName);
+//
+//            PendingIntent testPendingIntent = PendingIntent.getBroadcast(
+//                    MainActivity.this,
+//                    subject.hashCode(), // unique ID
+//                    testIntent,
+//                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+//            );
+//            testAlarmManager.setExact(
+//                    AlarmManager.RTC_WAKEUP,
+//                    testCalendar.getTimeInMillis(),
+//                    testPendingIntent
+//            );
+
+
+            // If the time has already passed, schedule for next week
             if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
                 calendar.add(Calendar.WEEK_OF_YEAR, 1);
             }
@@ -198,10 +220,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NotificationReceiver.class);
         intent.putExtra("subjectName", subject);
         intent.putExtra("room", room);
+        intent.putExtra("startTime", startTime);
+
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this,
-                (int) System.currentTimeMillis(),
+                (subject + room).hashCode(), // unique ID
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
@@ -209,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY * 7,
+                AlarmManager.INTERVAL_DAY * 7, // every week
                 pendingIntent
         );
     }
@@ -235,21 +259,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    // 🔹 Fetch timetable for RecyclerView
     private void fetchData() {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemList.clear();
 
+                // 1️⃣ Define the desired weekday order
+                List<String> dayOrder = new ArrayList<>();
+                dayOrder.add("Monday");
+                dayOrder.add("Tuesday");
+                dayOrder.add("Wednesday");
+                dayOrder.add("Thursday");
+                dayOrder.add("Friday");
+                dayOrder.add("Saturday");
+                dayOrder.add("Sunday");
+
+                // 2️⃣ Collect actual day keys that exist in Firebase
+                List<String> availableDays = new ArrayList<>();
                 for (DataSnapshot daySnap : snapshot.getChildren()) {
-                    String day = daySnap.getKey();
+                    availableDays.add(daySnap.getKey());
+                }
+
+                // 3️⃣ Sort availableDays based on dayOrder
+                availableDays.sort((d1, d2) ->
+                        Integer.compare(dayOrder.indexOf(d1), dayOrder.indexOf(d2))
+                );
+
+                // 4️⃣ Iterate in the custom order and add to the list
+                for (String day : availableDays) {
+                    DataSnapshot daySnap = snapshot.child(day);
+
+                    // Add the day header
                     itemList.add(new TimetableItem(TimetableItem.TYPE_DAY, day));
 
+                    // If you also want each day's periods sorted by time:
+                    List<DataSnapshot> periods = new ArrayList<>();
                     for (DataSnapshot timeSnap : daySnap.getChildren()) {
+                        periods.add(timeSnap);
+                    }
+                    // Sort periods if keys are like "10:00 - 10:55"
+                    periods.sort((a, b) -> a.getKey().compareTo(b.getKey()));
+                    for (DataSnapshot timeSnap : periods) {
                         String timePeriod = timeSnap.getKey();
                         TimetableEntry entry = timeSnap.getValue(TimetableEntry.class);
-
                         itemList.add(new TimetableItem(TimetableItem.TYPE_ENTRY, timePeriod, entry));
                     }
                 }
@@ -266,7 +320,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_app_bar_menu, menu);
+
+        // Read cached role
+        String role = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getString("user_role", "");
+
+        if ("student".equalsIgnoreCase(role)) {
+            menu.findItem(R.id.action_add_timetable).setVisible(false);
+        }
         return true;
     }
-
 }
