@@ -1,6 +1,7 @@
 package com.mcafirst.infome;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
     // 🔹 Fetch timetable for RecyclerView
     private void fetchData() {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemList.clear();
