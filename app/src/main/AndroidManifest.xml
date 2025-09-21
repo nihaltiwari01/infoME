@@ -6,26 +6,31 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/icon_infome"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/appiconsl"
+        android:roundIcon="@drawable/icon_infome"
         android:supportsRtl="true"
         android:theme="@style/Theme.InfoME">
+        <receiver android:name=".NotificationReceiver"
+            android:exported="true"
+            android:enabled="true"/>
+
+
         <activity
             android:name=".AddUsers"
             android:exported="false" />
 
-        <receiver android:name=".NotificationReceiver" />
 
         <activity
-            android:name=".UploadData"
-            android:exported="true"></activity>
+            android:name=".UploadTimetableData"
+            android:exported="true"/>
         <activity
             android:name=".Registeration_Page"
             android:exported="false">
@@ -52,18 +57,27 @@
         <activity
             android:name=".Login_Page"
             android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".Forgot_Password_Page"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Forgot_Password_Page"
-            android:exported="true"></activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"></activity>
+
+        <activity android:name=".SplashActivity"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>

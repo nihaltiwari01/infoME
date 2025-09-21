@@ -93,7 +93,7 @@ public class Login_Page extends AppCompatActivity {
             // User is already logged in, navigate to main activity
 
             if (currentUser.isEmailVerified()) {
-                Toast.makeText(Login_Page.this, "Email verified successfully!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Login_Page.this, "Email verified successfully!", Toast.LENGTH_SHORT).show();
                 // Unlock features or navigate
                 navigateToMainActivity(); // or remove verification prompts
             } else {
@@ -198,7 +198,7 @@ public class Login_Page extends AppCompatActivity {
                                         (task.getException() != null ? task.getException().getMessage() : "Unknown error"),
                                 Toast.LENGTH_LONG).show();
 
-// Reset progress bar and button state
+                    // Reset progress bar and button state
                     if (progressBar != null) progressBar.setVisibility(View.GONE);
                     loginButton.setEnabled(true);
                     }

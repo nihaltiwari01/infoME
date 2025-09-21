@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="20sp"
     android:orientation="vertical"
-    tools:context=".UploadData">
+    tools:context=".UploadTimetableData">
 
         <!-- Toolbar / Action Bar -->
         <com.google.android.material.appbar.MaterialToolbar

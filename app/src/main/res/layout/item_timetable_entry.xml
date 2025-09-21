@@ -20,7 +20,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/textTimePeriod"
+                android:id="@+id/tvPeriod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="09:00 - 10:00"
@@ -28,13 +28,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textSubject"
+                android:id="@+id/tvSubject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mathematics (MTH101)" />
 
             <TextView
-                android:id="@+id/textRoom"
+                android:id="@+id/tvRoom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Room: A201" />

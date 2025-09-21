@@ -1,27 +1,25 @@
 package com.mcafirst.infome;
 
 public class TimetableItem {
+
     public static final int TYPE_DAY = 0;
     public static final int TYPE_ENTRY = 1;
 
-    private int type; // 0 = day, 1 = entry
-    private String day;
-    private String timePeriod;
-    private TimetableEntry entry;
+    public int type;
+    public String dayName;        // for TYPE_DAY
+    public String period;         // e.g., "10:00-11:00"
+    public TimetableEntry entry;  // for TYPE_ENTRY
 
-    public TimetableItem(int type, String day) {
+    // 🔹 Day constructor
+    public TimetableItem(int type, String dayName) {
         this.type = type;
-        this.day = day;
+        this.dayName = dayName;
     }
 
-    public TimetableItem(int type, String timePeriod, TimetableEntry entry) {
+    // 🔹 Entry constructor
+    public TimetableItem(int type, String period, TimetableEntry entry) {
         this.type = type;
-        this.timePeriod = timePeriod;
+        this.period = period;
         this.entry = entry;
     }
-
-    public int getType() { return type; }
-    public String getDay() { return day; }
-    public String getTimePeriod() { return timePeriod; }
-    public TimetableEntry getEntry() { return entry; }
 }

@@ -5,13 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class TimetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<TimetableItem> itemList;
+    private final List<TimetableItem> itemList;
 
     public TimetableAdapter(List<TimetableItem> itemList) {
         this.itemList = itemList;
@@ -19,33 +20,34 @@ public class TimetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        return itemList.get(position).getType();
+        return itemList.get(position).type;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
         if (viewType == TimetableItem.TYPE_DAY) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_day, parent, false);
+            View view = inflater.inflate(R.layout.item_day_header, parent, false);
             return new DayViewHolder(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_timetable, parent, false);
+            View view = inflater.inflate(R.layout.item_timetable_entry, parent, false);
             return new EntryViewHolder(view);
         }
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TimetableItem item = itemList.get(position);
 
         if (holder instanceof DayViewHolder) {
-            ((DayViewHolder) holder).textDay.setText(item.getDay());
+            ((DayViewHolder) holder).dayText.setText(item.dayName);
         } else if (holder instanceof EntryViewHolder) {
-            TimetableEntry entry = item.getEntry();
-            ((EntryViewHolder) holder).textTimePeriod.setText(item.getTimePeriod());
-            ((EntryViewHolder) holder).textSubject.setText(entry.getSubjectName() + " (" + entry.getSubjectCode() + ")");
-            ((EntryViewHolder) holder).textRoom.setText("Room: " + entry.getRoomNumber());
+            TimetableEntry entry = item.entry;
+            ((EntryViewHolder) holder).periodText.setText(item.period);
+            ((EntryViewHolder) holder).subjectText.setText(entry.subjectName);
+            ((EntryViewHolder) holder).roomText.setText(entry.roomNumber);
         }
     }
 
@@ -54,23 +56,25 @@ public class TimetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return itemList.size();
     }
 
-    // ViewHolder for Day
+    // 🔹 ViewHolder for day header
     static class DayViewHolder extends RecyclerView.ViewHolder {
-        TextView textDay;
-        DayViewHolder(View itemView) {
+        TextView dayText;
+
+        DayViewHolder(@NonNull View itemView) {
             super(itemView);
-            textDay = itemView.findViewById(R.id.textDay);
+            dayText = itemView.findViewById(R.id.tvDayHeader);
         }
     }
 
-    // ViewHolder for Entry
+    // 🔹 ViewHolder for timetable entry
     static class EntryViewHolder extends RecyclerView.ViewHolder {
-        TextView textTimePeriod, textSubject, textRoom;
-        EntryViewHolder(View itemView) {
+        TextView periodText, subjectText, roomText;
+
+        EntryViewHolder(@NonNull View itemView) {
             super(itemView);
-            textTimePeriod = itemView.findViewById(R.id.textTimePeriod);
-            textSubject = itemView.findViewById(R.id.textSubject);
-            textRoom = itemView.findViewById(R.id.textRoom);
+            periodText = itemView.findViewById(R.id.tvPeriod);
+            subjectText = itemView.findViewById(R.id.tvSubject);
+            roomText = itemView.findViewById(R.id.tvRoom);
         }
     }
 }

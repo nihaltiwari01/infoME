@@ -2,6 +2,7 @@ package com.mcafirst.infome;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -93,7 +94,7 @@ public class Verification_Page extends AppCompatActivity {
             return;
         }
 
-        Query query = databaseReference.child("unRegisteredStudent").orderByValue().equalTo(rollNumber);
+        Query query = databaseReference.child("unregisteredStudent").orderByValue().equalTo(rollNumber);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -121,7 +122,7 @@ public class Verification_Page extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             } else {
-                                Toast.makeText(Verification_Page.this, "Enter Valid Roll Number" , Toast.LENGTH_SHORT ).show();
+                                Toast.makeText(Verification_Page.this, "Your roll number is not registered" , Toast.LENGTH_SHORT ).show();
                             }
                         }
 

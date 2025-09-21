@@ -9,17 +9,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class UploadData extends AppCompatActivity {
+public class UploadTimetableData extends AppCompatActivity {
 
         Spinner spinnerDay, spinnerTimePeriod, spinnerSubjectName ,spinnerSubjectCode, spinnerRoomNumber;
         EditText editTimePeriod, editSubjectName, editSubjectCode, editRoomNumber;
@@ -50,7 +46,7 @@ public class UploadData extends AppCompatActivity {
             findViewById(R.id.btnAddStudent).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(UploadData.this, AddUsers.class);
+                    Intent intent = new Intent(UploadTimetableData.this, AddUsers.class);
                             startActivity(intent);
                 }
             });
@@ -73,7 +69,8 @@ public class UploadData extends AppCompatActivity {
             spinnerDay.setAdapter(adapter);
 
             // Spinner values (Subject Name)
-            String[] timePeriod = {"10:00 - 10:55", "11:00 - 11:55", "12:00 - 12:55", "13:00 - 13:55", "14:00 - 14:55", "15:00 - 15:55", "16:00 - 16:55", "Other"};
+//            String[] timePeriod = {"10:00 - 10:55", "11:00 - 11:55", "12:00 - 12:55", "13:00 - 13:55", "14:00 - 14:55", "15:00 - 15:55", "16:00 - 16:55", "Other"};
+            String[] timePeriod = {"3 - 11:55", "23:57 - 11:55", "23:58 - 12:55", "23:59 - 13:55", "14:00 - 14:55", "15:00 - 15:55", "16:00 - 16:55", "Other"};
             ArrayAdapter<String> timePeriodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timePeriod);
             timePeriodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerTimePeriod.setAdapter(timePeriodAdapter);
@@ -117,11 +114,11 @@ public class UploadData extends AppCompatActivity {
             // Save in Firebase -> Timetable/Day/TimePeriod
             databaseRef.child(day).child(timePeriod).setValue(entry)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(UploadData.this, "Data Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadTimetableData.this, "Data Uploaded Successfully", Toast.LENGTH_SHORT).show();
                         clearFields();
                     })
                     .addOnFailureListener(e ->
-                            Toast.makeText(UploadData.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                            Toast.makeText(UploadTimetableData.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
 
         private void clearFields() {
