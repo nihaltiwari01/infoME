@@ -11,8 +11,8 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="first">Schedule</string>
-    <string name="second">Info</string>
-    <string name="third">Notes</string>
+    <string name="schedule">Schedule</string>
+    <string name="info">Info</string>
+    <string name="notes">Notes</string>
 
 </resources>

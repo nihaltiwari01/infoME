@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <item
-        android:id="@+id/nav_first"
-        android:icon="@drawable/search"
-
-        android:title="@string/first" />
-    <item
-        android:id="@+id/nav_second"
-        android:icon="@drawable/search"
-        android:title="@string/second" />
-    <item
-        android:id="@+id/nav_third"
-        android:icon="@drawable/search"
-        android:title="@string/third" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_first"
+        android:icon="@drawable/shedule"
+        android:title="schedule"/>
+    <item android:id="@+id/nav_second"
+        android:icon="@drawable/notice"
+        android:title="notice"/>
+    <item android:id="@+id/nav_third"
+        android:icon="@drawable/notes"
+        android:title="notes"/>
 </menu>
