@@ -8,5 +8,30 @@
 
     </style>
 
-    <style name="Theme.InfoME" parent="Base.Theme.InfoME" />
+    <style name="Theme.InfoME" parent="Base.Theme.InfoME" >
+
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/Raisinblack</item>
+        <item name="colorAccent">@color/ArgentinianBlue</item>
+    </style>
+    <style name="CustomBottomNavStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemActiveIndicatorStyle">@style/CustomActiveIndicatorStyle</item>
+    </style>
+
+    <style name="CustomActiveIndicatorStyle">
+        <item name="android:background">@color/ArgentinianBlue</item>
+        <item name="android:height">8dp</item>
+        <item name="android:shape">oval</item>
+
+    </style>
+
+
 </resources>

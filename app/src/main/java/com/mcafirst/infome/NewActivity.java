@@ -13,9 +13,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.mcafirst.infome.Fragments.FirstFragment;
-import com.mcafirst.infome.Fragments.SecondFragment;
-import com.mcafirst.infome.Fragments.ThirdFragment;
+import com.mcafirst.infome.Fragments.InformationFragment;
+import com.mcafirst.infome.Fragments.NotesFragment;
+import com.mcafirst.infome.Fragments.ScheduleFragment;
 
 public class NewActivity extends AppCompatActivity {
     ViewPager2 viewPager;
@@ -27,7 +27,6 @@ public class NewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
@@ -35,9 +34,9 @@ public class NewActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_nav);
 
         Fragment[] fragments = new Fragment[] {
-                new FirstFragment(),
-                new SecondFragment(),
-                new ThirdFragment()
+                new ScheduleFragment(),
+                new InformationFragment(),
+                new NotesFragment()
         };
 
         viewPager.setAdapter(new FragmentStateAdapter(this) {
