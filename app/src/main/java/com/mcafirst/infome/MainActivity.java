@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     // 🔹 Cancel all previous debug alarms
     private void cancelDebugAlarms() {
         SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
@@ -295,17 +296,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private int getDayOfWeek(String dayName) {
         switch (dayName) {
-            case "Sunday": return Calendar.SUNDAY;
-            case "Monday": return Calendar.MONDAY;
-            case "Tuesday": return Calendar.TUESDAY;
-            case "Wednesday": return Calendar.WEDNESDAY;
-            case "Thursday": return Calendar.THURSDAY;
-            case "Friday": return Calendar.FRIDAY;
-            case "Saturday": return Calendar.SATURDAY;
-            default: return Calendar.MONDAY;
+            case "Sunday":
+                return Calendar.SUNDAY;
+            case "Monday":
+                return Calendar.MONDAY;
+            case "Tuesday":
+                return Calendar.TUESDAY;
+            case "Wednesday":
+                return Calendar.WEDNESDAY;
+            case "Thursday":
+                return Calendar.THURSDAY;
+            case "Friday":
+                return Calendar.FRIDAY;
+            case "Saturday":
+                return Calendar.SATURDAY;
+            default:
+                return Calendar.MONDAY;
         }
     }
 
@@ -316,10 +324,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemList.clear();
-                List<String> dayOrder = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
+                List<String> dayOrder = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
                 List<String> availableDays = new ArrayList<>();
-                for (DataSnapshot daySnap : snapshot.getChildren()) availableDays.add(daySnap.getKey());
-                availableDays.sort((d1,d2) -> Integer.compare(dayOrder.indexOf(d1), dayOrder.indexOf(d2)));
+                for (DataSnapshot daySnap : snapshot.getChildren())
+                    availableDays.add(daySnap.getKey());
+                availableDays.sort((d1, d2) -> Integer.compare(dayOrder.indexOf(d1), dayOrder.indexOf(d2)));
 
                 for (String day : availableDays) {
                     DataSnapshot daySnap = snapshot.child(day);
@@ -327,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
 
                     List<DataSnapshot> periods = new ArrayList<>();
                     for (DataSnapshot timeSnap : daySnap.getChildren()) periods.add(timeSnap);
-                    periods.sort((a,b) -> a.getKey().compareTo(b.getKey()));
+                    periods.sort((a, b) -> a.getKey().compareTo(b.getKey()));
 
                     for (DataSnapshot timeSnap : periods) {
                         String timePeriod = timeSnap.getKey();

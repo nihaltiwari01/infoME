@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.InfoME" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/ArgentinianBlue</item>
+         <item name="colorPrimary">@color/AliceBlue</item>
         <item name="android:statusBarColor">#FF00BCD4</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
@@ -10,28 +10,9 @@
 
     <style name="Theme.InfoME" parent="Base.Theme.InfoME" >
 
-        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
     </style>
-
-    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    <style name="CustomActiveIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/LightSkyBlue</item>
     </style>
-
-    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurfaceVariant">@color/Raisinblack</item>
-        <item name="colorAccent">@color/ArgentinianBlue</item>
-    </style>
-    <style name="CustomBottomNavStyle" parent="Widget.Material3.BottomNavigationView">
-        <item name="itemActiveIndicatorStyle">@style/CustomActiveIndicatorStyle</item>
-    </style>
-
-    <style name="CustomActiveIndicatorStyle">
-        <item name="android:background">@color/ArgentinianBlue</item>
-        <item name="android:height">8dp</item>
-        <item name="android:shape">oval</item>
-
-    </style>
-
 
 </resources>

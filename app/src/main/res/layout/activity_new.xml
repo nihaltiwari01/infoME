@@ -21,6 +21,6 @@
         android:layout_gravity="bottom"
         app:itemIconSize="48px"
         app:itemTextAppearanceActive="@color/ArgentinianBlue"
-        style="@style/Widget.App.BottomNavigationView"
+        app:itemActiveIndicatorStyle="@style/CustomActiveIndicatorStyle"
         app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>

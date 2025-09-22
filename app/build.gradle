@@ -57,6 +57,8 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
     annotationProcessor libs.room.compiler
+    implementation 'androidx.viewpager2:viewpager2:1.1.0'
+    implementation 'com.tbuonomo:dotsindicator:5.0'      // for indicator dots
 
 
 
